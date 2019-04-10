@@ -116,8 +116,9 @@ def edit_files() -> None:
         file.write('wpa_key_mgmt=WPA-PSK\n')
         file.write('wpa_passphrase=V2X_stati0n\n')
         file.write('rsn_pairwise=CCMP\n')
-
-    subprocess.run(['rm', '-rf', str(RULES)+'/*'])
+    
+    print(f"Borrando  {RULES}")    
+    subprocess.run(['rm', '-rf', str(RULES)])
 
 
 if __name__ == '__main__':
