@@ -91,6 +91,8 @@ def edit_files() -> None:
     HOSTAPD = tmp.joinpath('etc', 'hostapd', 'hostapd.conf')
     HOSTS = tmp.joinpath('etc', 'hosts')
     RULES = tmp.joinpath('etc', 'udev', 'rules.d')
+    HISTORY = tmp.joinpath('root', '.bash_history')
+    INTERFACES = tmp.joinpath('etc', 'network', 'interfaces')
 
     # Hostname must be equal to the host local loopback
     print(f"Escribiendo {HOSTNAME}")
@@ -104,6 +106,29 @@ def edit_files() -> None:
         file.write('::1     localhost ip6-localhost ip6-loopback\n')
         file.write('ff02::1 ip6-allnodes\n')
         file.write('ff02::2 ip6-allrouters\n')
+
+    print(f"Escribiendo {INTERFACES}")
+    with open(str(INTERFACES), 'w') as file:
+        file.write('auto lo\n')
+        file.write('iface lo inet loopback\n\n')
+        file.write('auto eth0\n')
+        file.write('#allow-hotplug eth0\n')
+        file.write('#iface eth0 inet dhcp\n')
+        file.write('iface eth0 inet static\n')
+
+        if args.id == 1:
+            idx = 254
+        else:
+            idx = args.id
+
+        file.write(f'address 192.168.0.{idx}\n')
+        file.write('netmask 255.255.255.0\n\n')
+
+        file.write('auto wlan0\n')
+        file.write('iface wlan0 inet static\n')
+        file.write('hostapd /etc/hostapd/hostapd.conf\n')
+        file.write('address 192.168.1.1\n')
+        file.write('netmask 255.255.255.0\n')
 
     # 2.4 GHZ WIFI configuration
     print(f"Escribiendo {HOSTAPD}")
@@ -119,7 +144,10 @@ def edit_files() -> None:
     
     print(f"Borrando  {RULES}")    
     subprocess.run(['rm', '-rf', str(RULES)])
-
+    subprocess.run(['mkdir', str(RULES)])
+    print(f"Borrando  historial de comandos")
+    subprocess.run(['rm', str(HISTORY)])
+    subprocess.run(['touch', str(HISTORY)])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
