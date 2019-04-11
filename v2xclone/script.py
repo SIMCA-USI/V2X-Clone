@@ -26,7 +26,7 @@ def umount(unit: str) -> None:
 
 def clone(image: str, unit: str) -> None:
     """
-    Function to clone a image to the SD card
+    Function to clone a image to the CF card
 
     :param image: The .iso image
     :param unit: The target unit
@@ -47,7 +47,7 @@ def clone(image: str, unit: str) -> None:
 
 def format_unit(unit: str, name: str = '') -> None:
     """
-    Function to format a SD CARD
+    Function to format a CF CARD
 
     :param unit: The target unit
     :param name: Label name
@@ -65,7 +65,7 @@ def format_unit(unit: str, name: str = '') -> None:
 
 def mount(unit: str) -> None:
     """
-    Function to mount a SD card
+    Function to mount a CF card
 
     :param unit: Target
     """
@@ -145,7 +145,7 @@ def edit_files() -> None:
     print(f"Borrando  {RULES}")    
     subprocess.run(['rm', '-rf', str(RULES)])
     subprocess.run(['mkdir', str(RULES)])
-    print(f"Borrando  historial de comandos")
+    print(f"Borrando historial de comandos")
     subprocess.run(['rm', str(HISTORY)])
     subprocess.run(['touch', str(HISTORY)])
 
